@@ -97,11 +97,6 @@ int main() {
     uchar4 *dev_out;
 	CSC(cudaMalloc(&dev_out, sizeof(uchar4) * w * h));
 
-    cudaEvent_t start, stop;
-    CSC(cudaEventCreate(&start));
-    CSC(cudaEventCreate(&stop));
-    CSC(cudaEventRecord(start));
-
     kernel<<<dim3(16, 16), dim3(32, 32)>>>(tex, dev_out, w, h);
 
     CSC(cudaDeviceSynchronize());
