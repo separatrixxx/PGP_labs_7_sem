@@ -106,7 +106,7 @@ protected:
             point startPos = vertexes[pointsLine.first];
             point endPos = vertexes[pointsLine.second];
     
-            for (int i = 1; i <= lightsCount; ++i) {
+            for (size_t i = 1; i <= lightsCount; ++i) {
                 Vector3 startAdd = (endPos - startPos) * ((float)i) / ((float)(lightsCount + 1));
     
                 point diodCenter = startPos + startAdd + transY;
@@ -175,7 +175,7 @@ private:
             float transformLen = transformX / sin((M_PI - edgesAngle) / 2.0);
             transform = norm(transform) * transformLen;
     
-            for (int i = 1; i < edgeIdx.size() - 1; i++) {
+            for (size_t i = 1; i < edgeIdx.size() - 1; i++) {
                 triangles.push_back(triangleEarth(Triangle{
                     vertexes[edgeIdx[0]] + transform,
                     vertexes[edgeIdx[i]] + transform,
@@ -540,7 +540,7 @@ private:
         float totalTime = 0;
         float totalFrames = 0;
     
-        for (int frameNum = 0; viewer.updatePos(); frameNum++) {
+        for (size_t frameNum = 0; viewer.updatePos(); frameNum++) {
             uint64_t totalRays = 0;
             auto timeStart = steady_clock::now();    
             int activeRaysSize = scaledH * scaledW;
@@ -548,7 +548,7 @@ private:
             cpuInitRays(renderRays.data(), imgRender, viewer.matrixView, viewer.pc, viewer.zView, scaledW, scaledH);
             totalRays += activeRaysSize;
     
-            for (int _ = 0; _ < recDepth && activeRaysSize; ++_) {
+            for (size_t _ = 0; _ < recDepth && activeRaysSize; ++_) {
                 cpuRayTrace(renderRays.data(), activeRaysSize, imgRender, texRender.data(), floor, trianglesRender.data(), trianglesRender.size(), lightsRender.data(), lightsRender.size(), scaledW, scaledH);
     
                 activeRaysSize <<= 1;
@@ -611,7 +611,7 @@ private:
         float totalTime = 0;
         float totalFrames = 0;
     
-        for (int frameNum = 0; viewer.updatePos(); frameNum++) {
+        for (size_t frameNum = 0; viewer.updatePos(); frameNum++) {
             uint64_t totalRays = 0;
             auto timeStart = steady_clock::now();
     
@@ -630,7 +630,7 @@ private:
             CSC(cudaGetLastError());
             totalRays += activeRaysSize;
     
-            for (int _ = 0; _ < recDepth && activeRaysSize; ++_) {
+            for (size_t _ = 0; _ < recDepth && activeRaysSize; ++_) {
                 gpuRayTrace<<<64, 64>>>(
                     devRays, activeRaysSize, devImg, devTex,
                     floor, devTriangles, trianglesRender.size(),
@@ -791,7 +791,7 @@ int main(int argc, const char** argv) {
 
     cin >> data.lightSources;
 
-    for (int i = 0; i < data.lightSources; i++) {
+    for (size_t i = 0; i < data.lightSources; i++) {
         Vector3 lightPos, lightCol;
         cin >> lightPos.x >> lightPos.y >> lightPos.z;
         cin >> lightCol.x >> lightCol.y >> lightCol.z;

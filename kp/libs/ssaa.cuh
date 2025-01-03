@@ -9,14 +9,14 @@ __global__ void gpuSsaa(int* pic, const Vector3* image, int w, int h, int sqrtPe
     int offsetY = blockDim.y * gridDim.y;
 
     for (int row = globalX; row < h; row += offsetX) {
-        for (int col = globalY; col < w; col += offsetY) {
+        for (size_t col = globalY; col < w; col += offsetY) {
             int subImageStartRow = row * sqrtPerPix;
             int subImageStartCol = col * sqrtPerPix;
 
             Vector3 average = {0.0f, 0.0f, 0.0f};
 
             for (int y = subImageStartRow; y < subImageStartRow + sqrtPerPix; ++y) {
-                for (int x = subImageStartCol; x < subImageStartCol + sqrtPerPix; ++x) {
+                for (size_t x = subImageStartCol; x < subImageStartCol + sqrtPerPix; ++x) {
                     average += image[y * w * sqrtPerPix + x];
                 }
             }
@@ -34,7 +34,7 @@ __global__ void gpuSsaa(int* pic, const Vector3* image, int w, int h, int sqrtPe
 
 __host__ void cpuSsaa(int* pic, const Vector3* image, int w, int h, int sqrtPerPix) {
     for (int row = 0; row < h; ++row) {
-        for (int col = 0; col < w; ++col) {
+        for (size_t col = 0; col < w; ++col) {
             Vector3 avgColor = {0.0f, 0.0f, 0.0f};
 
             for (int y = row * sqrtPerPix; y < row * sqrtPerPix + sqrtPerPix; ++y) {
